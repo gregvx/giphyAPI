@@ -43,19 +43,23 @@ function removeSpaces(name) {
 }
 //code here the ApiCall feature
 function doApiCall(toonName) {
-    var xhr = $.get("https://api.giphy.com/v1/gifs/search?q=" + toonName + "&api_key=" + apiKey + "&limit=10");
+    var xhr = $.get("https://api.giphy.com/v1/gifs/search?q=" + toonName + "&api_key=" + apiKey + "&limit=10&rating=g");
     xhr.done(function(data) {
         for (var i=0; i< data.data.length; i++) {
             // console.log(data.data[i]);
             var gifMotionInfo = data.data[i].images.fixed_height.url;
             var gifStillInfo = data.data[i].images.original_still.url;
-            attachGif(gifStillInfo, gifMotionInfo);
+            var rating = data.data[i].rating;
+            attachGif(gifStillInfo, gifMotionInfo, rating);
         }
     });
 }
 
 //this function takes a url of a gif image and attaches it to the page
-function attachGif(stillUrl, motionUrl) {
+function attachGif(stillUrl, motionUrl, rating) {
+    //create a div tag
+    var newDiv = $('<div>');
+    newDiv.attr('class', 'toon');
     //create an image tag
     var newImage = $('<img>');
     //add url to tag
@@ -65,8 +69,16 @@ function attachGif(stillUrl, motionUrl) {
     newImage.attr('data-state', 'still');
     newImage.attr('height', "200");
     newImage.attr('onclick', 'changeState(this)')
-    //attach image
-    $('#cartoons').prepend(newImage);
+    //create a p tag
+    var newP = $('<p>');
+    var rating = "rating: " + rating;
+    newP.text(rating);
+    //attach img to div
+    newDiv.append(newImage);
+    //attach p to div
+    newDiv.append(newP);
+    //attach div
+    $('#cartoons').prepend(newDiv);
 }
 
 function changeState(imageClicked) {;
