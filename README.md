@@ -1,4 +1,6 @@
 # giphyAPI
+
+[Visit page here](https://gregvx.github.io/giphyAPI/)
 This app performs ajax calls to the giphy api to get images of various cartoon characters.
 
 There is a set of default characters already in the top section of the page
